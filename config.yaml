@@ -1,0 +1,113 @@
+# Global configuration for the RIR generator / visual validator
+
+sim:
+  c_mps: 343.0
+  default_fs_hz: 16000
+  clearance_m: 0.30           # min distance to any wall for array center and sources
+  near_zenith_min_upar: 0.10  # reject when ||u_parallel|| < this (array-frame)
+  rir_len_max_s: 1.20         # clamp: min(1.3 * RT60, 1.2) 
+  near_zenith_min_upar: 0.10
+  # New: ISM reflection order controls
+  max_order_default: auto   # {auto | integer}; if integer, forces that order
+  max_order_cap: 20         # safety cap when auto is used  
+      # PRA image-source max order (sensible default)
+
+array:
+  id: uca4_r27p7mm
+  radius_m: 0.0277  
+  # NEW: keep array center near the room center (within a 1 m diameter disk)
+  center_near_room_center: true
+  center_radius_m: 0.5      # radius (m) around (L/2, W/2)
+  center_height_range_m: [1.2, 1.5]
+  yaw_deg_range: [0.0, 360.0]
+  roll_deg_sigma: 1.0
+  pitch_tilt_deg_mixture:
+    - { range: [35.0, 40.0], p: 0.25 }
+    - { range: [40, 45.0], p: 0.50 }
+    - { range: [45.0, 50.0], p: 0.25 }
+  pitch_tilt_jitter_deg: 1.0
+  clean_room_probability: 0.08  # 5–10% recommendation
+  force_forward_tilt: true
+
+
+jitter:
+  # Per-room, fixed per-mic jitter applied in array frame (then posed to room)
+  mixtures:
+    - { p: 0.80, sigma_mm: 2.0, clip_mm: 5.0  }
+    - { p: 0.15, sigma_mm: 4.0, clip_mm: 8.0  }
+    # "Stress" case: sample sigma uniformly in [6,8] mm, clip at 2*sigma
+    - { p: 0.05, sigma_mm_range: [6.0, 8.0], clip_factor: 2.0 }
+
+distances:
+  range_m: [0.5, 5.0]     # sampled log-uniform by default
+  # radial limit relative to min(width, depth)
+  radial_frac_of_min_wh: 0.80
+  # per spec (still log-uniform inside each bin)
+  bins:
+    - { range: [0.5, 1.0],  p: 0.30 }
+    - { range: [1.0, 2.0],  p: 0.35 }
+    - { range: [2.0, 3.5],  p: 0.25 }
+    - { range: [3.5, 5.0],  p: 0.10 }
+  radial_frac_of_min_wh: 0.80  # unchanged; keeps sources away from walls
+
+
+
+heights:
+  # NEW: speech height centered ~1.80 m
+  speech_mu_m: 1.70
+  speech_sigma_m: 0.07
+  clip_range_m: [1.50, 2.00]
+
+distances:
+  # keep global limits/clamps
+  range_m: [0.5, 5.0]
+  radial_frac_of_min_wh: 0.8
+  # NEW: distance prior used **after** feasible [d_min, d_max] is computed
+  prior: uniform_feasible   # {uniform_feasible | log_uniform_feasible | power_feasible}
+  power_k: 0.3              # only used if prior=power_feasible (p(d) ∝ 1/d^k)
+
+sim:
+  c_mps: 343.0
+  clearance_m: 0.30
+  rir_len_max_s: 1.2
+  near_zenith_min_upar: 0.10
+rooms:
+  # Size families (L x W x H) in meters: each dim sampled uniform in the range
+  small:
+    L_range: [3.0, 5.0]
+    W_range: [3.0, 5.0]
+    H_range: [2.4, 3.0]
+  medium:
+    L_range: [6.0, 10.0]
+    W_range: [5.0, 8.0]
+    H_range: [3.0, 4.0]
+  large:
+    L_range: [12.0, 20.0]
+    W_range: [10.0, 15.0]
+    H_range: [4.0, 6.0]
+
+  # Room size pairing with RT60 bins
+  pairing:
+    # bin group low-high in seconds (inclusive, exclusive)
+    - { span: [0.1, 0.3], small: 0.70, medium: 0.25, large: 0.05 }
+    - { span: [0.3, 0.8], small: 0.35, medium: 0.50, large: 0.15 }
+    - { span: [0.8, 1.2], small: 0.10, medium: 0.45, large: 0.45 }
+
+rt60:
+  # Target bin counts per split (sum equals #rooms per split)
+  bins_s:
+    - [0.1, 0.2]
+    - [0.2, 0.3]
+    - [0.3, 0.4]
+    - [0.4, 0.5]
+    - [0.5, 0.6]
+    - [0.6, 0.7]
+    - [0.7, 0.8]
+    - [0.8, 0.9]
+    - [0.9, 1.0]
+    - [1.0, 1.1]
+    - [1.1, 1.2]
+  counts:
+    train: [75,120,180,210,210,180,150,120,105,75,75]   # total 1500
+    val:   [10,16,24,28,28,24,20,16,14,10,10]           # total 200
+    test:  [15,24,36,42,42,36,30,24,21,15,15]           # total 300
