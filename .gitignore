@@ -1,0 +1,91 @@
+# --- Python caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+__pypackages__/
+
+# --- C extensions ---
+*.so
+
+# --- Packaging / build artifacts ---
+.Python
+build/
+dist/
+downloads/
+eggs/
+.eggs/
+sdist/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+.conda/
+conda-env/
+.python-version  # pyenv
+
+# --- PyInstaller ---
+*.spec
+
+# --- Logs / coverage / testing ---
+logs/
+*.log
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.pytest_cache/
+
+# --- Type checkers / linters ---
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Environment / secrets ---
+.env
+.env.*
+*.env
+
+# --- Data (uncomment if you keep large/generated datasets out of Git) ---
+# data/
+# data/**/*
+# !data/.gitkeep
+
+# --- Audio / models (uncomment if generated/large) ---
+ *.wav
+ *.flac
+ *.mp3
+ *.ogg
+# checkpoints/
+# models/
+ *.pt
+ *.onnx
+ *.tflite
+
+# --- Docker / runtime ---
+*.pid
