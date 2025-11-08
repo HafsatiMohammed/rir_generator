@@ -447,9 +447,6 @@ This project is designed for DoA estimation research. Contributions are welcome 
 - Enhanced visualization tools
 - Performance optimizations
 
-## License
-
-[Specify your license here]
 
 ## Citation
 
