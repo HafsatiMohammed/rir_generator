@@ -455,7 +455,7 @@ If you use this RIR generator in your research, please cite:
 ```bibtex
 @software{rir_generator,
   title = {RIR Generator for DoA Estimation},
-  author = {[hafsati.mohammed@gmail.com]},
+  author = {[HAFSATI Mohammed]},
   year = {2024},
   url = {[https://github.com/HafsatiMohammed/rir_generator/]}
 }
